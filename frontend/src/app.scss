@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Custom global styles
+@layer base {
+    body {
+        @apply bg-gray-50 text-gray-900;
+    }
+}
+
+// Custom utility classes
+@layer utilities {
+    .typing-text {
+        @apply font-mono text-lg leading-relaxed;
+    }
+}

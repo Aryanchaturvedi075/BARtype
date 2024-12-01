@@ -30,10 +30,12 @@ cd backend
 npm init -y
 
 # Install core dependencies
-npm install express@4.18.3 cors@2.8.5 helmet@7.1.0 zod@3.22.4 nanoid@5.0.6 fast-diff@1.3.0
+npm install express@latest cors@latest helmet@latest zod@latest nanoid@latest fast-diff@latest
 
 # Install development dependencies
-npm install -D nodemon@3.1.0
+npm install -D nodemon@latest
+
+npm update
 
 # Create source directories
 mkdir -p src/{config,services,middleware,routes,utils}
@@ -59,14 +61,16 @@ cd frontend
 npm install
 
 # Install UI and utility libraries
-npm install zod@3.22.4 nanoid@5.0.6 fast-diff@1.3.0
+npm install zod@latest nanoid@latest fast-diff@latest
 
 # Install Flowbite and TailwindCSS dependencies
-npm install flowbite-svelte@1.0.7
-npm install -D tailwindcss@3.4.1 postcss@8.4.35 autoprefixer@10.4.19 sass@1.72.0
+npm install flowbite-svelte@latest
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest sass@latest
 
 # Initialize Tailwind CSS
 npx tailwindcss init -p
+
+npm update
 ```
 
 ### Frontend Project Structure
