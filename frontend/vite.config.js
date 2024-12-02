@@ -3,8 +3,8 @@ import { sveltekit } from '@sveltejs/kit/vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
-	css: {
-		postcss: './postcss.config.js', // Ensures PostCSS is used
+	server: {
+		port: 3000	// default is 3000
 	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
