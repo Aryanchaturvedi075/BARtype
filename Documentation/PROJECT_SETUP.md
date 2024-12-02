@@ -75,6 +75,7 @@ npm install @sveltejs/adapter-node@latest
 npm install -D tailwindcss@latest postcss@latest
 npm install -D autoprefixer@latest sass@latest
 npm install -D vitest@latest @testing-library/svelte@latest
+npm install -D jsdom@latest @testing-library/jest-dom@latest
 ```
 
 Create essential configuration files:
