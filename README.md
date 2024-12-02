@@ -65,7 +65,7 @@ bartype/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/bartype.git
+git clone https://github.com/Aryanchaturvedi075/BARtype.git
 cd bartype
 ```
 
