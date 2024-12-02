@@ -177,7 +177,7 @@ PUBLIC_BACKEND_URL=http://localhost:3001
 PUBLIC_WS_URL=ws://localhost:3002
 ```
 
-Each section will include:
+Future sections will include:
 
 1. Core service implementations
 2. WebSocket integration
