@@ -1,0 +1,31 @@
+{
+  "name": "bartype",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+		"lint": "prettier --check . && eslint .",
+    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "build": "npm run build:backend && npm run build:frontend",
+
+    "test:unit": "playwright test --config=playwright.config.js --project=unit",
+    "test:integration": "playwright test --config=playwright.config.js --project=integration",
+    "test:e2e": "playwright test --config=playwright.config.js --project=e2e",
+
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "keywords": [],
+  "author": "Basel A., Aryan C., Rafi L.",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/experimental-ct-svelte": "^1.49.0",
+    "@playwright/test": "^1.49.0",
+    "eslint": "^9.16.0",
+    "prettier": "^3.4.1"
+  }
+}

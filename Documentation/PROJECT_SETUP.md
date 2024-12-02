@@ -1,13 +1,7 @@
 # BARtype: Complete Implementation Guide
 
-## Table of Contents
-
-1. [Initial Project Setup](#initial-project-setup)
-2. [Backend Implementation](#backend-implementation)
-3. [Frontend Implementation](#frontend-implementation)
-4. [Testing and Deployment](#testing-and-deployment)
-
 ## Initial Project Setup
+
 
 ### Project Initialization
 
@@ -21,9 +15,153 @@ cd bartype
 # Initialize git repository
 git init
 
+npm init -y
+
+# Install testing framework
+npm install -D @playwright/test@latest
+npm install -D @playwright/experimental-ct-svelte@latest
+
+# Install development utilities
+npm install -D prettier@latest eslint@latest
+npm update
+
 # Create main directories
 mkdir frontend backend
 ```
+
+Update `playwright.config.js` file:
+```javascript
+// playwright.config.js
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  // Global test settings
+  testDir: './',
+  testMatch: '**/*.spec.js',
+  timeout: 30000,
+  expect: {
+    timeout: 5000
+  },
+
+  // Force all tests to be run sequentially
+  workers: 1,
+
+  // Common reporter configuration
+  reporter: [
+    ['html'],
+    ['junit', { outputFile: 'test-results/junit.xml' }]
+  ],
+
+  // Project-specific configurations
+  projects: [
+    {
+      name: 'unit',
+      testDir: './src',
+      testMatch: '**/*.spec.js',
+      use: {
+        ...devices['Desktop Chrome'],
+        screenshot: 'off',
+        video: 'off',
+        trace: 'off'
+      }
+    },
+    {
+      name: 'integration',
+      testDir: './tests/integration',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:3000',
+        screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
+        trace: 'retain-on-failure'
+      },
+      dependencies: ['unit']
+    },
+    {
+      name: 'e2e',
+      testDir: './tests/e2e',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:3000',
+        screenshot: 'on',
+        video: 'on',
+        trace: 'on',
+        launchOptions: {
+          slowMo: 100
+        }
+      },
+      dependencies: ['integration']
+    }
+  ],
+
+  // Web server configuration
+  webServer: {
+    command: 'npm run dev',
+    port: 3000,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000
+  },
+
+  // Use the same configuration across all projects
+  use: {
+    // Browser considerations
+    headless: true,
+    viewport: { width: 1280, height: 720 },
+    ignoreHTTPSErrors: true,
+
+    // Automation configurations
+    actionTimeout: 10000,
+    navigationTimeout: 15000,
+
+    // Retry configuration
+    retry: 2,
+
+    // Test isolation
+    testIsolation: true,
+
+    // Artifacts
+    preserveOutput: 'failures-only',
+  }
+});
+```
+
+
+### Root-level package.json:
+```json
+{
+  "name": "bartype",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+		"lint": "prettier --check . && eslint .",
+    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "build": "npm run build:backend && npm run build:frontend",
+
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    
+    "test:unit": "playwright test --config=playwright.config.js --project=unit",
+    "test:integration": "playwright test --config=playwright.config.js --project=integration",
+    "test:e2e": "playwright test --config=playwright.config.js --project=e2e",
+
+  },
+  "keywords": [],
+  "author": "Basel A., Aryan C., Rafi L.",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/experimental-ct-svelte": "^1.49.0",
+    "@playwright/test": "^1.49.0",
+    "eslint": "^9.16.0",
+    "prettier": "^3.4.1"
+  }
+}
+```
+
 
 ### Backend Setup
 
@@ -36,31 +174,53 @@ cd backend
 npm init -y
 
 # Install core dependencies
-npm install express@latest ws@latest zod@latest
-npm install fastify@latest @fastify/cors@latest
-npm install nanoid@latest fast-diff@latest
+npm install fastify@latest
+npm install @fastify/cors@latest
+npm install @fastify/websocket@latest
+npm install fast-diff@latest
+npm install nanoid@latest
+npm install zod@latest
 
 # Install development dependencies
-npm install -D nodemon@latest jest@latest supertest@latest
+npm install -D nodemon@latest
+
+# Update all packages
+npm update
 ```
 
-Update package.json with type module support and scripts:
-
+Update `backend/package.json` with type module support and scripts:
 ```json
 {
+  "name": "bartype-backend",
+  "version": "1.0.0",
   "type": "module",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "test": "jest"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build": "npm ci"
+  },
+  "author": "Basel A., Aryan C., Rafi L.",
+  "license": "ISC",
+  "description": "Backend node components built using the fastify web framework",
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "@fastify/websocket": "^11.0.1",
+    "fast-diff": "^1.3.0",
+    "fastify": "^5.1.0",
+    "nanoid": "^5.0.9",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
 ```
 
+
 ### Frontend Setup
 
 Initialize the SvelteKit application with SSR support:
-
 ```bash
 cd ../frontend
 
@@ -68,15 +228,57 @@ cd ../frontend
 npx sv create .
 
 # Install dependencies
-npm install zod@latest nanoid@latest
 npm install @sveltejs/adapter-node@latest
+npm install zod@latest
+npm install nanoid@latest
+npm install flowbite-svelte@latest
+npm install flowbite@latest
 
 # Install development dependencies
-npm install -D tailwindcss@latest postcss@latest
-npm install -D autoprefixer@latest sass@latest
-npm install -D vitest@latest @testing-library/svelte@latest
-npm install -D jsdom@latest @testing-library/jest-dom@latest
+npm install -D @sveltejs/kit@latest
+npm install -D tailwindcss@latest
+npm install -D postcss@latest
+npm install -D autoprefixer@latest
+npm install -D sass@latest
+
+# Update all packages
+npm update
 ```
+
+Update `frontend/package.json` with type module support and scripts:
+```json
+{
+	"name": "bartype-frontend",
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"author": "Basel A., Aryan C., Rafi L.",
+	"description": "Frontend SvelteKit components built using the Vite Meta Framework, Tailwind CSS, SASS, and Flowbite-svelte",
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.9.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"autoprefixer": "^10.4.20",
+		"postcss": "^8.4.49",
+		"sass": "^1.81.0",
+		"svelte": "^5.0.0",
+		"tailwindcss": "^3.4.15",
+		"vite": "^6.0.0"
+	},
+	"dependencies": {
+		"@sveltejs/adapter-node": "^5.2.9",
+		"flowbite": "^2.5.2",
+		"flowbite-svelte": "^0.47.4",
+		"nanoid": "^5.0.9",
+		"zod": "^3.23.8"
+	}
+}
+```
+
 
 Create essential configuration files:
 

@@ -1,0 +1,30 @@
+{
+	"name": "bartype-frontend",
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"author": "Basel A., Aryan C., Rafi L.",
+	"description": "Frontend SvelteKit components built using the Vite Meta Framework, Tailwind CSS, SASS, and Flowbite-svelte",
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.9.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"autoprefixer": "^10.4.20",
+		"postcss": "^8.4.49",
+		"sass": "^1.81.0",
+		"svelte": "^5.0.0",
+		"tailwindcss": "^3.4.15",
+		"vite": "^6.0.0"
+	},
+	"dependencies": {
+		"@sveltejs/adapter-node": "^5.2.9",
+		"flowbite": "^2.5.2",
+		"flowbite-svelte": "^0.47.4",
+		"nanoid": "^5.0.9",
+		"zod": "^3.23.8"
+	}
+}
