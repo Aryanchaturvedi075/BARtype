@@ -272,7 +272,7 @@ server.listen(PORT, () => {
 });
 ```
 
-The next session explores the Frontend Implementation section? It will cover:
+The next session explores the Frontend Implementation section. It will cover:
 
 1. SSR Configuration
 2. Component Architecture
