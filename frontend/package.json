@@ -5,8 +5,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"preview": "vite preview",
-		"test:unit": "playwright test src/**/*.spec.js"
+		"preview": "vite preview"
 	},
 	"author": "Basel A., Aryan C., Rafi L.",
 	"description": "Frontend SvelteKit components built using the Vite Meta Framework, Tailwind CSS, SASS, and Flowbite-svelte",

@@ -7,7 +7,6 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "npm ci",
-    "test:unit": "playwright test src/**/*.spec.js",
     "start:test": "NODE_ENV=test node index.js"
   },
   "author": "Basel A., Aryan C., Rafi L.",
