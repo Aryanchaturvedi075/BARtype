@@ -1,9 +1,6 @@
 <script>
     import { onMount, onDestroy } from 'svelte';
-    import { WebSocketClient } from '$lib/utils/websocket';
-    import TextDisplay from '$lib/components/typing/TextDisplay.svelte';
-    import TextInput from '$lib/components/typing/TextInput.svelte';
-    import Results from '$lib/components/typing/Results.svelte';
+    import { WebSocketClient, TextDisplay, TextInput, Results } from '$lib';
     import { Alert } from 'flowbite-svelte';
   
     let wsClient;

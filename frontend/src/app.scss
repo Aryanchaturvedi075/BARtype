@@ -1,0 +1,86 @@
+// src/app.scss
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Custom Base Styles
+@layer base {
+  body {
+    @apply bg-primary text-text-primary min-h-screen transition-colors duration-300;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-primary-light;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-accent/30 rounded-full hover:bg-accent/50 transition-colors;
+  }
+}
+
+// Component-Specific Styles
+@layer components {
+  .typing-container {
+    @apply max-w-4xl mx-auto p-6 animate-fade-in;
+  }
+
+  .typing-text {
+    @apply font-mono text-lg leading-relaxed bg-primary-light 
+           rounded-lg p-6 shadow-lg shadow-black/20 
+           border border-text-secondary/10;
+
+    .character {
+      @apply transition-all duration-150;
+
+      &.pending {
+        @apply text-text-secondary/50;
+      }
+
+      &.correct {
+        @apply text-accent animate-pulse-soft;
+      }
+
+      &.incorrect {
+        @apply text-red-500 bg-red-900/20;
+      }
+    }
+  }
+
+  .typing-input {
+    @apply w-full p-4 bg-primary-light border border-text-secondary/10 
+           rounded-lg focus:ring-2 focus:ring-accent/50 focus:border-accent
+           font-mono text-lg text-text-primary placeholder-text-secondary/30
+           transition-all duration-300;
+  }
+
+  .metrics-display {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-6 animate-slide-up;
+
+    .metric-card {
+      @apply bg-primary-light p-4 rounded-lg border border-text-secondary/10
+             shadow-lg shadow-black/20 transition-transform duration-300
+             hover:transform hover:scale-105;
+
+      .metric-value {
+        @apply text-2xl font-bold text-accent animate-pulse-soft;
+      }
+    }
+  }
+}
+
+.btn-primary {
+  @apply bg-accent text-primary font-semibold px-6 py-2 rounded-lg
+         transform transition-all duration-300 hover:scale-105
+         hover:bg-accent-light focus:ring-2 focus:ring-accent-dark;
+}
+
+// Utility classes
+@layer utilities {
+    .transition-fast {
+        @apply transition-all duration-150;
+    }
+}
