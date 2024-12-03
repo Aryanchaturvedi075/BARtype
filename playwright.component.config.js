@@ -11,7 +11,7 @@ export default defineConfig({
   ],
   timeout: 10000,                                                   // Global test timeout
   use: {
-    ctPort: 3100,                                                   // Port for the Component Test server
+    ctPort: 3000,                                                   // Port for the Component Test server
     ctViteConfig: { plugins: ['@sveltejs/vite-plugin-svelte'] },    // Vite config for the Component Test server
   },
 });
