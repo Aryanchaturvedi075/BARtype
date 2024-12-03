@@ -65,7 +65,7 @@ export class WebSocketClient {
       };
     }
   
-    private async handleDisconnect(event) {                     // TODO: Fix this
+    async handleDisconnect(event) {                     // TODO: Fix this
       if (!event.wasClean && this.reconnectAttempts < this.maxReconnectAttempts) {
         this.reconnectAttempts++;
         await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, this.reconnectAttempts)));
