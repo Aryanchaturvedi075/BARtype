@@ -20,6 +20,14 @@
   ::-webkit-scrollbar-thumb {
     @apply bg-accent/30 rounded-full hover:bg-accent/50 transition-colors;
   }
+
+  h1 {
+    @apply text-3xl font-bold text-gray-900;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold text-gray-800;
+  }
 }
 
 // Component-Specific Styles
@@ -80,7 +88,7 @@
 
 // Utility classes
 @layer utilities {
-    .transition-fast {
-        @apply transition-all duration-150;
-    }
+  .transition-fast {
+    @apply transition-all duration-150;
+  }
 }

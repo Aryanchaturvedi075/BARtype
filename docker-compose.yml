@@ -1,0 +1,30 @@
+# docker-compose.yml (Development)
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: development
+    ports:
+      - "3001:3001"
+      - "3002:3002"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend

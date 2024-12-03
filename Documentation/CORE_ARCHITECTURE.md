@@ -17,8 +17,6 @@ backend/
 ├── package.json                 // Project dependencies and scripts
 ├── package-lock.json            // Dependency version lock
 ├── .env                         // Environment variables
-├── .env.example                 // Example environment configuration
-├── .gitignore                   // Git ignore patterns
 ├── index.js                     // Application entry point
 └── src/
       ├── config/
@@ -55,8 +53,6 @@ frontend/
 ├── package.json                 // Project dependencies and scripts
 ├── package-lock.json            // Dependency version lock
 ├── .env                         // Environment variables
-├── .env.example                 // Example environment configuration
-├── .gitignore                   // Git ignore patterns
 ├── svelte.config.js             // SvelteKit configuration
 ├── vite.config.js               // Vite bundler configuration
 ├── tailwind.config.js           // Tailwind CSS configuration
