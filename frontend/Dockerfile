@@ -11,9 +11,9 @@ FROM node:23-slim AS production
 WORKDIR /app
 COPY --from=builder /app/build ./build
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci npm ci --omit=dev
 EXPOSE 3000
-CMD ["node", "build"]
+CMD ["npm", "run", "start"]
 
 # Development stage
 FROM node:23-slim AS development
