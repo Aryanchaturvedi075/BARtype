@@ -2,26 +2,31 @@
   "name": "bartype",
   "version": "1.0.0",
   "type": "module",
+  "author": "Basel A., Aryan C., Rafi L.",
+  "description": "A web application for Typing Tests",
+  "license": "ISC",
+
   "scripts": {
     "format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "dev": "npm run dev:backend & npm run dev:frontend",
     "build": "npm run build:backend && npm run build:frontend",
 
-    "test:unit": "playwright test --config=playwright.config.js --project=unit",
-    "test:integration": "playwright test --config=playwright.config.js --project=integration",
-    "test:e2e": "playwright test --config=playwright.config.js --project=e2e",
-
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
-
     "build:backend": "cd backend && npm run build",
-    "build:frontend": "cd frontend && npm run build"
-  },
-  "keywords": [],
-  "author": "Basel A., Aryan C., Rafi L.",
-  "license": "ISC",
+    "build:frontend": "cd frontend && npm run build",
+
+    "test:unit": "playwright test --project=unit",
+    "test:websocket": "playwright test --project=websocket-unit",
+    "test:components": "playwright test -c playwright.component.config.js",
+    "test:integration": "playwright test --project=integration",
+    "test:e2e": "playwright test --project=e2e",
+    "test": "npm run test:unit && npm run test:websocket && npm run test:components && npm run test:integration && npm run test:e2e",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui"
+  },  
+
   "devDependencies": {
     "@playwright/experimental-ct-svelte": "^1.49.0",
     "@playwright/test": "^1.49.0",

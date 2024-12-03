@@ -2,7 +2,6 @@
 
 ## Initial Project Setup
 
-
 ### Project Initialization
 
 First, create the project structure and initialize the repository:
@@ -26,105 +25,8 @@ npm install -D prettier@latest eslint@latest
 npm update
 
 # Create main directories
-mkdir frontend backend
+mkdir frontend backend tests
 ```
-
-Update `playwright.config.js` file:
-```javascript
-// playwright.config.js
-import { defineConfig, devices } from '@playwright/test';
-
-export default defineConfig({
-  // Global test settings
-  testDir: './',
-  testMatch: '**/*.spec.js',
-  timeout: 30000,
-  expect: {
-    timeout: 5000
-  },
-
-  // Force all tests to be run sequentially
-  workers: 1,
-
-  // Common reporter configuration
-  reporter: [
-    ['html'],
-    ['junit', { outputFile: 'test-results/junit.xml' }]
-  ],
-
-  // Project-specific configurations
-  projects: [
-    {
-      name: 'unit',
-      testDir: './src',
-      testMatch: '**/*.spec.js',
-      use: {
-        ...devices['Desktop Chrome'],
-        screenshot: 'off',
-        video: 'off',
-        trace: 'off'
-      }
-    },
-    {
-      name: 'integration',
-      testDir: './tests/integration',
-      use: {
-        ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3000',
-        screenshot: 'only-on-failure',
-        video: 'retain-on-failure',
-        trace: 'retain-on-failure'
-      },
-      dependencies: ['unit']
-    },
-    {
-      name: 'e2e',
-      testDir: './tests/e2e',
-      use: {
-        ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3000',
-        screenshot: 'on',
-        video: 'on',
-        trace: 'on',
-        launchOptions: {
-          slowMo: 100
-        }
-      },
-      dependencies: ['integration']
-    }
-  ],
-
-  // Web server configuration
-  webServer: {
-    command: 'npm run dev',
-    port: 3000,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000
-  },
-
-  // Use the same configuration across all projects
-  use: {
-    // Browser considerations
-    headless: true,
-    viewport: { width: 1280, height: 720 },
-    ignoreHTTPSErrors: true,
-
-    // Automation configurations
-    actionTimeout: 10000,
-    navigationTimeout: 15000,
-
-    // Retry configuration
-    retry: 2,
-
-    // Test isolation
-    testIsolation: true,
-
-    // Artifacts
-    preserveOutput: 'failures-only',
-  }
-});
-```
-
 
 ### Root-level package.json:
 ```json
@@ -306,7 +208,7 @@ export default defineConfig({
 });
 ```
 
-### Docker Configuration
+<!-- ### Docker Configuration
 
 Create Docker configuration files for development and production:
 
@@ -362,30 +264,4 @@ services:
       - /app/node_modules
     depends_on:
       - backend
-```
-
-### Environmental Configuration
-
-Create environment configuration files:
-
-```bash
-# backend/.env.development
-PORT=3001
-WS_PORT=3002
-NODE_ENV=development
-CORS_ORIGIN=http://localhost:3000
-
-# frontend/.env.development
-PUBLIC_BACKEND_URL=http://localhost:3001
-PUBLIC_WS_URL=ws://localhost:3002
-```
-
-Future sections will include:
-
-1. Core service implementations
-2. WebSocket integration
-3. Component architecture
-4. State management
-5. API integration
-6. Error handling
-7. Testing strategies
+``` -->
