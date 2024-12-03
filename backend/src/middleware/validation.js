@@ -1,12 +1,13 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const createValidationMiddleware = (schema) => {
-  return async (request, reply) => {                                // TODO: Verify if this was needed here
+  return async (request, reply) => {
+    // TODO: Verify if this was needed here
     try {
       const validationTarget = {
         body: request.body,
         query: request.query,
-        params: request.params
+        params: request.params,
       };
 
       const validated = await schema.parseAsync(validationTarget);
@@ -17,26 +18,32 @@ export const createValidationMiddleware = (schema) => {
       if (error instanceof z.ZodError) {
         throw error;
       }
-      throw new Error('Validation middleware error');
+      throw new Error("Validation middleware error");
     }
   };
 };
 
 // Common validation schemas
 export const sessionRequestSchema = z.object({
-  body: z.object({
-    wordCount: z.number().int().min(10).max(200).optional().default(50)
-  }).strict(),
+  body: z
+    .object({
+      wordCount: z.number().int().min(10).max(200).optional().default(50),
+    })
+    .strict(),
   query: z.object({}).strict(),
-  params: z.object({}).strict()
+  params: z.object({}).strict(),
 });
 
 export const updateSessionSchema = z.object({
-  body: z.object({
-    input: z.string()
-  }).strict(),
-  params: z.object({
-    sessionId: z.string()
-  }).strict(),
-  query: z.object({}).strict()
+  body: z
+    .object({
+      input: z.string(),
+    })
+    .strict(),
+  params: z
+    .object({
+      sessionId: z.string(),
+    })
+    .strict(),
+  query: z.object({}).strict(),
 });

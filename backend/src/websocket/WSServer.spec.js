@@ -1,10 +1,10 @@
-import { test, expect } from '@playwright/test';
-import { WSServer } from './WSServer.js';
-import { StateManager } from '../core/session/StateManager.js';
-import { TextAnalyzer } from '../core/typing/TextAnalyzer.js';
-import { MetricsCalculator } from '../core/typing/MetricsCalculator.js';
+import { test, expect } from "@playwright/test";
+import { WSServer } from "./WSServer.js";
+import { StateManager } from "../core/session/StateManager.js";
+import { TextAnalyzer } from "../core/typing/TextAnalyzer.js";
+import { MetricsCalculator } from "../core/typing/MetricsCalculator.js";
 
-test.describe('WebSocket Server', () => {
+test.describe("WebSocket Server", () => {
   let wsServer;
   let stateManager;
   let textAnalyzer;
@@ -17,37 +17,39 @@ test.describe('WebSocket Server', () => {
     wsServer = new WSServer(stateManager, textAnalyzer, metricsCalculator);
   });
 
-  test('handles new connection with valid session', () => {
+  test("handles new connection with valid session", () => {
     const session = stateManager.createSession();
     const mockSocket = {
       close: () => {},
-      on: () => {}
+      on: () => {},
     };
 
     const mockConnection = {
-      socket: mockSocket
+      socket: mockSocket,
     };
 
     const mockRequest = {
-      query: { sessionId: session.id }
+      query: { sessionId: session.id },
     };
 
     expect(() => wsServer.initialize({ get: () => {} })).not.toThrow();
   });
 
-  test('rejects connection without session ID', () => {
+  test("rejects connection without session ID", () => {
     let closeCode;
     const mockSocket = {
-      close: (code) => { closeCode = code; },
-      on: () => {}
+      close: (code) => {
+        closeCode = code;
+      },
+      on: () => {},
     };
 
     const mockConnection = {
-      socket: mockSocket
+      socket: mockSocket,
     };
 
     const mockRequest = {
-      query: {}
+      query: {},
     };
 
     wsServer.handleConnection(mockConnection, mockRequest);

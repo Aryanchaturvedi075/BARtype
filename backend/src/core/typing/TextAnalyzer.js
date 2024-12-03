@@ -1,4 +1,4 @@
-import fastDiff from 'fast-diff';
+import fastDiff from "fast-diff";
 
 export class TextAnalyzer {
   analyzeDifferences(targetText, inputText) {
@@ -6,7 +6,8 @@ export class TextAnalyzer {
     return this.processDifferences(diffs, targetText);
   }
 
-  processDifferences(diffs, targetText) {                               // TODO: Clarify whether targetText is needed
+  processDifferences(diffs, targetText) {
+    // TODO: Clarify whether targetText is needed
     let position = 0;
     const errors = [];
     const analysis = {
@@ -14,7 +15,7 @@ export class TextAnalyzer {
       incorrectCharacters: 0,
       missingCharacters: 0,
       extraCharacters: 0,
-      errors: []
+      errors: [],
     };
 
     diffs.forEach(([type, value]) => {
@@ -26,20 +27,20 @@ export class TextAnalyzer {
         case -1: // Deletion
           analysis.missingCharacters += value.length;
           errors.push({
-            type: 'missing',
+            type: "missing",
             position,
             expected: value,
-            actual: ''
+            actual: "",
           });
           break;
         case 1: // Addition
           analysis.extraCharacters += value.length;
           analysis.incorrectCharacters += value.length;
           errors.push({
-            type: 'extra',
+            type: "extra",
             position,
-            expected: '',
-            actual: value
+            expected: "",
+            actual: value,
           });
           position += value.length;
           break;
@@ -51,8 +52,11 @@ export class TextAnalyzer {
   }
 
   calculateAccuracy(analysis) {
-    const totalExpectedCharacters = analysis.correctCharacters + analysis.missingCharacters;
-    if (totalExpectedCharacters === 0) { return 100; }
+    const totalExpectedCharacters =
+      analysis.correctCharacters + analysis.missingCharacters;
+    if (totalExpectedCharacters === 0) {
+      return 100;
+    }
     return (analysis.correctCharacters / totalExpectedCharacters) * 100;
   }
 }
