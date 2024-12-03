@@ -31,21 +31,13 @@ export default defineConfig({
       name: 'integration',
       testDir: './tests/integration',
       testMatch: '**/*.spec.js',
-      use: { 
-        ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3000'
-      },
-      dependencies: ['unit']
+      use: { ...devices['Desktop Chrome'] }
     },
     {
       name: 'e2e',
       testDir: './tests/e2e',
       testMatch: '**/*.spec.js',
-      use: { 
-        ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3000'
-      },
-      dependencies: ['integration']
+      use: { ...devices['Desktop Chrome'] }
     }
   ],
   webServer: [
