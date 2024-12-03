@@ -22,8 +22,7 @@ export const apiRoutes = async (fastify) => {
     handler: async (request, reply) => {
       // TODO: verify if reply is needed
       const { wordCount } = request.body;
-      const stateManager = fastify.stateManager;
-      const textGenerator = fastify.textGenerator;
+      const { stateManager, textGenerator } = fastify;
 
       try {
         const text = await textGenerator.generateText(wordCount);
