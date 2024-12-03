@@ -3,7 +3,7 @@ import fastify from "fastify";
 import cors from "@fastify/cors";
 import websocket from "@fastify/websocket";
 import { CONFIG } from "./config/environment.js";
-import { errorHandler} from "./middleware/errorHandler.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 import { apiRoutes } from "./routes/api.js";
 import { WSServer } from "./websocket/WSServer.js";
 import { StateManager } from "./core/session/StateManager.js";

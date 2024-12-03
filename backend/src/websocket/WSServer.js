@@ -10,7 +10,7 @@ export class WSServer {
 
   initialize(fastify) {
     fastify.get("/ws", { websocket: true }, (connection, request) => {
-      const sessionId = request.query.sessionId;
+      const { sessionId } = request.query.sessionId;
 
       if (!sessionId) {
         connection.socket.close(4000, "Session ID is required");
