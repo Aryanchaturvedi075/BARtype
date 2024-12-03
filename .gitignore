@@ -10,18 +10,38 @@
 .DS_Store
 Thumbs.db
 
-# Env
-.env
-.env.*
-!.env.example
-!.env.test
-
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-node_modules/
+# Node
 package-lock.json
 old_*/
 *DRAFT.*
 .npmrc
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+test-results/
+playwright-report/
+e2e-results/
+
+# Production
+build/
+dist/
+
+# Environment files
+.env.*
+.env.local
+.env.*.local
+
+# Editor directories
+.idea/
+.vscode/
+*.swp
+*.swo

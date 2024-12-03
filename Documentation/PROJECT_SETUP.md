@@ -14,6 +14,12 @@ cd bartype
 # Initialize git repository
 git init
 
+# Create necessary directories
+mkdir -p backend/src/{config,core/{session,typing},middleware,routes,websocket/handlers}
+mkdir -p frontend/src/{lib/{components/typing,utils},routes}
+mkdir -p tests/{integration/{api,websocket,typing-session},e2e/{fixtures,setup,scenarios/{typing-experience,responsiveness}}}
+
+# Initialize the root package.json
 npm init -y
 
 # Install testing framework
@@ -21,11 +27,11 @@ npm install -D @playwright/test@latest
 npm install -D @playwright/experimental-ct-svelte@latest
 
 # Install development utilities
-npm install -D prettier@latest eslint@latest
+npm install -D prettier@latest eslint@latest concurrently@latest
 npm update
 
-# Create main directories
-mkdir frontend backend tests
+# Create environment files
+touch .env.development .env.test .env.production
 ```
 
 ### Root-level package.json:
