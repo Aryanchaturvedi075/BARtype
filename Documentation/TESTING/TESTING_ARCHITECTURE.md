@@ -23,7 +23,7 @@ bartype/
 │       ├── core/
 │       │   ├── session/
 │       │   │   ├── StateManager.js
-│       │   │   └── StateManager.spec.js                [unit test]      
+│       │   │   └── StateManager.spec.js                [unit test]
 │       │   └── typing/
 │       │       ├── TextGenerator.js
 │       │       ├── TextAnalyzer.js
@@ -46,7 +46,7 @@ bartype/
 │               ├── errorHandler.js
 │               ├── typingHandler.spec.js               [unit test]
 │               └── errorHandler.spec.js                [unit test]
-│           
+│
 ├── frontend/
 │   └── src/
 │       ├── lib/

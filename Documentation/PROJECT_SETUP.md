@@ -27,7 +27,8 @@ npm install -D @playwright/test@latest
 npm install -D @playwright/experimental-ct-svelte@latest
 
 # Install development utilities
-npm install -D prettier@latest eslint@latest concurrently@latest
+npm install -D prettier@latest concurrently@latest
+npm install -D eslint@latest eslint-config-prettier@latest eslint-plugin-svelte@latest
 npm update
 
 # Create environment files
@@ -35,6 +36,7 @@ touch .env.development .env.test .env.production
 ```
 
 ### Root-level package.json:
+
 ```json
 {
   "name": "bartype",
@@ -42,7 +44,7 @@ touch .env.development .env.test .env.production
   "type": "module",
   "scripts": {
     "format": "prettier --write .",
-		"lint": "prettier --check . && eslint .",
+    "lint": "prettier --check . && eslint .",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "dev": "npm run dev:backend & npm run dev:frontend",
     "build": "npm run build:backend && npm run build:frontend",
@@ -52,11 +54,10 @@ touch .env.development .env.test .env.production
 
     "build:backend": "cd backend && npm run build",
     "build:frontend": "cd frontend && npm run build",
-    
+
     "test:unit": "playwright test --config=playwright.config.js --project=unit",
     "test:integration": "playwright test --config=playwright.config.js --project=integration",
-    "test:e2e": "playwright test --config=playwright.config.js --project=e2e",
-
+    "test:e2e": "playwright test --config=playwright.config.js --project=e2e"
   },
   "keywords": [],
   "author": "Basel A., Aryan C., Rafi L.",
@@ -69,7 +70,6 @@ touch .env.development .env.test .env.production
   }
 }
 ```
-
 
 ### Backend Setup
 
@@ -97,6 +97,7 @@ npm update
 ```
 
 Update `backend/package.json` with type module support and scripts:
+
 ```json
 {
   "name": "bartype-backend",
@@ -125,10 +126,10 @@ Update `backend/package.json` with type module support and scripts:
 }
 ```
 
-
 ### Frontend Setup
 
 Initialize the SvelteKit application with SSR support:
+
 ```bash
 cd ../frontend
 
@@ -154,39 +155,39 @@ npm update
 ```
 
 Update `frontend/package.json` with type module support and scripts:
+
 ```json
 {
-	"name": "bartype-frontend",
-	"version": "0.0.1",
-	"type": "module",
-	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "vite preview"
-	},
-	"author": "Basel A., Aryan C., Rafi L.",
-	"description": "Frontend SvelteKit components built using the Vite Meta Framework, Tailwind CSS, SASS, and Flowbite-svelte",
-	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.9.0",
-		"@sveltejs/vite-plugin-svelte": "^5.0.0",
-		"autoprefixer": "^10.4.20",
-		"postcss": "^8.4.49",
-		"sass": "^1.81.0",
-		"svelte": "^5.0.0",
-		"tailwindcss": "^3.4.15",
-		"vite": "^6.0.0"
-	},
-	"dependencies": {
-		"@sveltejs/adapter-node": "^5.2.9",
-		"flowbite": "^2.5.2",
-		"flowbite-svelte": "^0.47.4",
-		"nanoid": "^5.0.9",
-		"zod": "^3.23.8"
-	}
+  "name": "bartype-frontend",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": "Basel A., Aryan C., Rafi L.",
+  "description": "Frontend SvelteKit components built using the Vite Meta Framework, Tailwind CSS, SASS, and Flowbite-svelte",
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.9.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "sass": "^1.81.0",
+    "svelte": "^5.0.0",
+    "tailwindcss": "^3.4.15",
+    "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "@sveltejs/adapter-node": "^5.2.9",
+    "flowbite": "^2.5.2",
+    "flowbite-svelte": "^0.47.4",
+    "nanoid": "^5.0.9",
+    "zod": "^3.23.8"
+  }
 }
 ```
-
 
 Create essential configuration files:
 

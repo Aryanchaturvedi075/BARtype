@@ -28,6 +28,8 @@
     "@playwright/test": "^1.49.0",
     "concurrently": "^9.1.0",
     "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-svelte": "^2.46.1",
     "prettier": "^3.4.1"
   }
 }

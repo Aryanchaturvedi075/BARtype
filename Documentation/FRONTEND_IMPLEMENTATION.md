@@ -9,15 +9,15 @@ First, configure SvelteKit for optimal SSR performance and API integration:
 ```javascript
 // frontend/src/hooks.server.js
 export async function handle({ event, resolve }) {
-    event.locals.apiBaseUrl = process.env.PUBLIC_BACKEND_URL;
-    event.locals.wsUrl = process.env.PUBLIC_WS_URL;
-    return resolve(event);
+  event.locals.apiBaseUrl = process.env.PUBLIC_BACKEND_URL;
+  event.locals.wsUrl = process.env.PUBLIC_WS_URL;
+  return resolve(event);
 }
 
 // frontend/src/lib/config/api.js
 export const API_CONFIG = {
-    baseUrl: import.meta.env.PUBLIC_BACKEND_URL,
-    wsUrl: import.meta.env.PUBLIC_WS_URL
+  baseUrl: import.meta.env.PUBLIC_BACKEND_URL,
+  wsUrl: import.meta.env.PUBLIC_WS_URL,
 };
 ```
 
@@ -28,91 +28,94 @@ Create a WebSocket client service to handle real-time communication:
 ```javascript
 // frontend/src/lib/services/websocket.js
 export class WebSocketClient {
-    constructor(url, options = {}) {
-        this.url = url;
-        this.options = options;
-        this.handlers = new Map();
+  constructor(url, options = {}) {
+    this.url = url;
+    this.options = options;
+    this.handlers = new Map();
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = options.maxReconnectAttempts || 5;
+  }
+
+  connect() {
+    return new Promise((resolve, reject) => {
+      this.ws = new WebSocket(this.url);
+
+      // Bind all event handlers
+      this.ws.onmessage = this.handleMessage.bind(this);
+      this.ws.onclose = this.handleClose.bind(this);
+      this.ws.onerror = (error) => {
+        this.handleError(error);
+        reject(new Error("WebSocket connection failed"));
+      };
+
+      // Set timeout for connection attempt
+      const connectionTimeout = setTimeout(() => {
+        reject(new Error("WebSocket connection timeout"));
+      }, 5000);
+
+      // Clear timeout if connection succeeds
+      this.ws.onopen = () => {
+        clearTimeout(connectionTimeout);
         this.reconnectAttempts = 0;
-        this.maxReconnectAttempts = options.maxReconnectAttempts || 5;
+        resolve();
+      };
+    });
+  }
+
+  handleMessage(event) {
+    try {
+      const message = JSON.parse(event.data);
+      const handlers = this.handlers.get(message.type);
+      if (handlers) {
+        handlers.forEach((handler) => handler(message.data));
+      }
+    } catch (error) {
+      this.handleError(error);
     }
+  }
 
-    connect() {
-        return new Promise((resolve, reject) => {
-            this.ws = new WebSocket(this.url);
-
-            // Bind all event handlers
-            this.ws.onmessage = this.handleMessage.bind(this);
-            this.ws.onclose = this.handleClose.bind(this);
-            this.ws.onerror = (error) => {
-                this.handleError(error);
-                reject(new Error('WebSocket connection failed'));
-            };
-
-            // Set timeout for connection attempt
-            const connectionTimeout = setTimeout(() => {
-                reject(new Error('WebSocket connection timeout'));
-            }, 5000);
-
-            // Clear timeout if connection succeeds
-            this.ws.onopen = () => {
-                clearTimeout(connectionTimeout);
-                this.reconnectAttempts = 0;
-                resolve();
-            };
-        });
+  handleClose(event) {
+    if (!event.wasClean && this.reconnectAttempts < this.maxReconnectAttempts) {
+      this.reconnectAttempts++;
+      setTimeout(
+        () => this.connect(),
+        1000 * Math.pow(2, this.reconnectAttempts),
+      );
     }
+  }
 
-    handleMessage(event) {
-        try {
-            const message = JSON.parse(event.data);
-            const handlers = this.handlers.get(message.type);
-            if (handlers) {
-                handlers.forEach(handler => handler(message.data));
-            }
-        } catch (error) {
-            this.handleError(error);
-        }
+  handleError(error) {
+    console.error("WebSocket error:", error);
+    const errorHandlers = this.handlers.get("error");
+    if (errorHandlers) {
+      errorHandlers.forEach((handler) => handler(error));
     }
+  }
 
-    handleClose(event) {
-        if (!event.wasClean && this.reconnectAttempts < this.maxReconnectAttempts) {
-            this.reconnectAttempts++;
-            setTimeout(() => this.connect(), 1000 * Math.pow(2, this.reconnectAttempts));
-        }
+  subscribe(eventType, handler) {
+    if (!this.handlers.has(eventType)) {
+      this.handlers.set(eventType, new Set());
     }
+    this.handlers.get(eventType).add(handler);
 
-    handleError(error) {
-        console.error('WebSocket error:', error);
-        const errorHandlers = this.handlers.get('error');
-        if (errorHandlers) {
-            errorHandlers.forEach(handler => handler(error));
-        }
+    return () => {
+      this.handlers.get(eventType).delete(handler);
+    };
+  }
+
+  send(type, data) {
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({ type, ...data }));
+    } else {
+      throw new Error("WebSocket is not connected");
     }
+  }
 
-    subscribe(eventType, handler) {
-        if (!this.handlers.has(eventType)) {
-            this.handlers.set(eventType, new Set());
-        }
-        this.handlers.get(eventType).add(handler);
-
-        return () => {
-            this.handlers.get(eventType).delete(handler);
-        };
+  disconnect() {
+    if (this.ws) {
+      this.ws.close();
     }
-
-    send(type, data) {
-        if (this.ws.readyState === WebSocket.OPEN) {
-            this.ws.send(JSON.stringify({ type, ...data }));
-        } else {
-            throw new Error('WebSocket is not connected');
-        }
-    }
-
-    disconnect() {
-        if (this.ws) {
-            this.ws.close();
-        }
-    }
+  }
 }
 ```
 
@@ -122,63 +125,67 @@ Implement a reactive store for managing typing test state:
 
 ```javascript
 // frontend/src/lib/stores/typing.js
-import { writable, derived } from 'svelte/store';
+import { writable, derived } from "svelte/store";
 
 function createTypingStore() {
-    const initialState = {
-        sessionId: null,
-        text: '',
-        input: '',
-        status: 'idle',
-        metrics: null,
-        error: null
-    };
+  const initialState = {
+    sessionId: null,
+    text: "",
+    input: "",
+    status: "idle",
+    metrics: null,
+    error: null,
+  };
 
-    const { subscribe, set, update } = writable(initialState);
+  const { subscribe, set, update } = writable(initialState);
 
-    return {
-        subscribe,
-        initialize: (sessionData) => update(state => ({
-            ...state,
-            sessionId: sessionData.id,
-            text: sessionData.text,
-            status: 'ready'
-        })),
-        updateInput: (input) => update(state => ({
-            ...state,
-            input,
-            status: input.length === state.text.length ? 'complete' : 'active'
-        })),
-        setMetrics: (metrics) => update(state => ({
-            ...state,
-            metrics
-        })),
-        setError: (error) => update(state => ({
-            ...state,
-            error
-        })),
-        reset: () => set(initialState)
-    };
+  return {
+    subscribe,
+    initialize: (sessionData) =>
+      update((state) => ({
+        ...state,
+        sessionId: sessionData.id,
+        text: sessionData.text,
+        status: "ready",
+      })),
+    updateInput: (input) =>
+      update((state) => ({
+        ...state,
+        input,
+        status: input.length === state.text.length ? "complete" : "active",
+      })),
+    setMetrics: (metrics) =>
+      update((state) => ({
+        ...state,
+        metrics,
+      })),
+    setError: (error) =>
+      update((state) => ({
+        ...state,
+        error,
+      })),
+    reset: () => set(initialState),
+  };
 }
 
 export const typingStore = createTypingStore();
 
 // Derived stores for computed values
-export const typingProgress = derived(typingStore, $store => ({
-    isComplete: $store.status === 'complete',
-    isActive: $store.status === 'active',
-    progress: $store.text ? ($store.input.length / $store.text.length) * 100 : 0
+export const typingProgress = derived(typingStore, ($store) => ({
+  isComplete: $store.status === "complete",
+  isActive: $store.status === "active",
+  progress: $store.text ? ($store.input.length / $store.text.length) * 100 : 0,
 }));
 
-export const typingAccuracy = derived(typingStore, $store => {
-    if (!$store.text || !$store.input) {
-        return 100;
-    }
-    const correctChars = [...$store.input].filter((char, index) => 
-        char === $store.text[index]
-    ).length;
-    
-    return (correctChars / $store.input.length) * 100;
+export const typingAccuracy = derived(typingStore, ($store) => {
+  if (!$store.text || !$store.input) {
+    return 100;
+  }
+  const correctChars = [...$store.input].filter(
+    (char, index) => char === $store.text[index],
+  ).length;
+
+  return (correctChars / $store.input.length) * 100;
 });
 ```
 
@@ -190,7 +197,7 @@ export const typingAccuracy = derived(typingStore, $store => {
 <!-- frontend/src/lib/components/typing/TextDisplay.svelte -->
 <script>
     import { onMount } from 'svelte';
-    
+
     export let text = '';
     export let input = '';
     export let characterClass = '';
@@ -208,7 +215,7 @@ export const typingAccuracy = derived(typingStore, $store => {
 
 <div class="typing-text" role="textbox" aria-label="Typing text">
     {#each characters as { char, status }, index}
-        <span 
+        <span
             class="character {characterClass} {status}"
             data-position={index}
         >{char}</span>
@@ -226,11 +233,11 @@ export const typingAccuracy = derived(typingStore, $store => {
         &.pending {
             @apply text-gray-400;
         }
-        
+
         &.correct {
             @apply text-green-600;
         }
-        
+
         &.incorrect {
             @apply text-red-600 bg-red-100;
         }
@@ -245,9 +252,9 @@ export const typingAccuracy = derived(typingStore, $store => {
 <script>
     import { createEventDispatcher } from 'svelte';
     import { typingStore } from '$lib/stores/typing';
-    
+
     const dispatch = createEventDispatcher();
-    
+
     export let disabled = false;
     let inputElement;
 
@@ -345,11 +352,11 @@ export const typingAccuracy = derived(typingStore, $store => {
     import MetricsDisplay from '$lib/components/typing/MetricsDisplay.svelte';
 
     let wsClient;
-    
+
     onMount(async () => {
         wsClient = new WebSocketClient(import.meta.env.PUBLIC_WS_URL);
         await wsClient.connect();
-        
+
         wsClient.subscribe('metrics', (metrics) => {
             typingStore.setMetrics(metrics);
         });
@@ -364,7 +371,7 @@ export const typingAccuracy = derived(typingStore, $store => {
 
 <div class="typing-container">
     <TextDisplay text={$typingStore.text} input={$typingStore.input} />
-    <InputHandler 
+    <InputHandler
         disabled={$typingStore.status === 'complete'}
         on:input={(e) => typingStore.updateInput(e.detail.value)}
     />

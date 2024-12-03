@@ -28,7 +28,7 @@ export class TextService {
         const validated = TextRequestSchema.parse(params);
         const sessionId = nanoid();
         const text = this.generateText(validated.wordCount);
-        
+
         const session = {
             id: sessionId,
             text,
@@ -158,31 +158,31 @@ Create the REST API endpoints:
 
 ```javascript
 // backend/src/routes/typing.js
-import { Router } from 'express';
-import { z } from 'zod';
+import { Router } from "express";
+import { z } from "zod";
 
 export function createTypingRoutes(textService, metricsService) {
-    const router = Router();
+  const router = Router();
 
-    router.post('/sessions', async (req, res) => {
-        try {
-            const session = await textService.generateSession(req.body);
-            res.json(session);
-        } catch (error) {
-            res.status(400).json({ error: error.message });
-        }
-    });
+  router.post("/sessions", async (req, res) => {
+    try {
+      const session = await textService.generateSession(req.body);
+      res.json(session);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
 
-    router.get('/sessions/:sessionId/metrics', async (req, res) => {
-        try {
-            const metrics = await metricsService.getMetrics(req.params.sessionId);
-            res.json(metrics);
-        } catch (error) {
-            res.status(404).json({ error: error.message });
-        }
-    });
+  router.get("/sessions/:sessionId/metrics", async (req, res) => {
+    try {
+      const metrics = await metricsService.getMetrics(req.params.sessionId);
+      res.json(metrics);
+    } catch (error) {
+      res.status(404).json({ error: error.message });
+    }
+  });
 
-    return router;
+  return router;
 }
 ```
 
@@ -192,33 +192,33 @@ Implement comprehensive error handling:
 
 ```javascript
 // backend/src/middleware/errorHandler.js
-import { z } from 'zod';
+import { z } from "zod";
 
 export class ApplicationError extends Error {
-    constructor(message, statusCode = 500) {
-        super(message);
-        this.statusCode = statusCode;
-    }
+  constructor(message, statusCode = 500) {
+    super(message);
+    this.statusCode = statusCode;
+  }
 }
 
 export const errorHandler = (err, req, res, next) => {
-    if (err instanceof z.ZodError) {
-        return res.status(400).json({
-            error: 'Validation Error',
-            details: err.errors
-        });
-    }
-
-    if (err instanceof ApplicationError) {
-        return res.status(err.statusCode).json({
-            error: err.message
-        });
-    }
-
-    console.error('Unhandled Error:', err);
-    return res.status(500).json({
-        error: 'Internal Server Error'
+  if (err instanceof z.ZodError) {
+    return res.status(400).json({
+      error: "Validation Error",
+      details: err.errors,
     });
+  }
+
+  if (err instanceof ApplicationError) {
+    return res.status(err.statusCode).json({
+      error: err.message,
+    });
+  }
+
+  console.error("Unhandled Error:", err);
+  return res.status(500).json({
+    error: "Internal Server Error",
+  });
 };
 ```
 
@@ -228,15 +228,15 @@ Finally, tie everything together in the main application file:
 
 ```javascript
 // backend/src/index.js
-import express from 'express';
-import cors from 'cors';
-import { createServer } from 'http';
-import { TextService } from './core/typing/TextService.js';
-import { MetricsService } from './core/metrics/MetricsService.js';
-import { TypingWebSocketServer } from './websocket/WSServer.js';
-import { createTypingRoutes } from './routes/typing.js';
-import { errorHandler } from './middleware/errorHandler.js';
-import { EventEmitter } from 'events';
+import express from "express";
+import cors from "cors";
+import { createServer } from "http";
+import { TextService } from "./core/typing/TextService.js";
+import { MetricsService } from "./core/metrics/MetricsService.js";
+import { TypingWebSocketServer } from "./websocket/WSServer.js";
+import { createTypingRoutes } from "./routes/typing.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import { EventEmitter } from "events";
 
 const app = express();
 const server = createServer(app);
@@ -248,16 +248,18 @@ const metricsService = new MetricsService();
 const wsServer = new TypingWebSocketServer(server, textService, metricsService);
 
 // Configure middleware
-app.use(cors({
+app.use(
+  cors({
     origin: process.env.CORS_ORIGIN,
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type']
-}));
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+  }),
+);
 
 app.use(express.json());
 
 // Configure routes
-app.use('/api', createTypingRoutes(textService, metricsService));
+app.use("/api", createTypingRoutes(textService, metricsService));
 
 // Error handling
 app.use(errorHandler);
@@ -267,8 +269,8 @@ const PORT = process.env.PORT || 3001;
 const WS_PORT = process.env.WS_PORT || 3002;
 
 server.listen(PORT, () => {
-    console.log(`HTTP Server running on port ${PORT}`);
-    console.log(`WebSocket Server running on port ${WS_PORT}`);
+  console.log(`HTTP Server running on port ${PORT}`);
+  console.log(`WebSocket Server running on port ${WS_PORT}`);
 });
 ```
 

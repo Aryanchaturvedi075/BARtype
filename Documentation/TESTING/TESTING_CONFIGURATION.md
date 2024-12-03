@@ -13,18 +13,18 @@ The testing configuration is divided into two main files: a general configuratio
 The following configuration, stored in `playwright.component.config.js` in the root directory, handles all Svelte component testing:
 
 ```javascript
-import { defineConfig } from '@playwright/experimental-ct-svelte';
+import { defineConfig } from "@playwright/experimental-ct-svelte";
 
 export default defineConfig({
-  testDir: './frontend/src',
+  testDir: "./frontend/src",
   testMatch: [
-    './lib/components/typing/*.spec.js',
-    './routes/*!(.server).spec.js'
+    "./lib/components/typing/*.spec.js",
+    "./routes/*!(.server).spec.js",
   ],
-  timeout: 10000,                                                   // Global test timeout
+  timeout: 10000, // Global test timeout
   use: {
-    ctPort: 3100,                                                   // Port for the Component Test server
-    ctViteConfig: { plugins: ['@sveltejs/vite-plugin-svelte'] },    // Vite config for the Component Test server
+    ctPort: 3100, // Port for the Component Test server
+    ctViteConfig: { plugins: ["@sveltejs/vite-plugin-svelte"] }, // Vite config for the Component Test server
   },
 });
 ```
@@ -34,10 +34,10 @@ export default defineConfig({
 The primary configuration file, stored as `playwright.config.js` in the root directory, manages unit tests, WebSocket-specific tests, integration tests, and end-to-end tests:
 
 ```javascript
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: '.',
+  testDir: ".",
   timeout: 30000,
   expect: { timeout: 5000 },
   // Force all tests to be run sequentially
@@ -45,56 +45,56 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'unit',
+      name: "unit",
       testMatch: [
-        './backend/src/**/!(websocket)/*.spec.js',
-        './frontend/src/lib/utils/!(websocket)*.spec.js'
-      ]
+        "./backend/src/**/!(websocket)/*.spec.js",
+        "./frontend/src/lib/utils/!(websocket)*.spec.js",
+      ],
     },
     {
-      name: 'websocket-unit',
+      name: "websocket-unit",
       testMatch: [
-        './backend/src/websocket/**/*.spec.js',
-        './frontend/src/lib/utils/websocket.spec.js'
+        "./backend/src/websocket/**/*.spec.js",
+        "./frontend/src/lib/utils/websocket.spec.js",
       ],
       use: {
         actionTimeout: 5000,
-        testTimeout: 10000
-      }
+        testTimeout: 10000,
+      },
     },
     {
-      name: 'integration',
-      testDir: './tests/integration',
-      testMatch: '**/*.spec.js',
-      use: { 
-        ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3000'
+      name: "integration",
+      testDir: "./tests/integration",
+      testMatch: "**/*.spec.js",
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL: "http://localhost:3000",
       },
-      dependencies: ['unit']
+      dependencies: ["unit"],
     },
     {
-      name: 'e2e',
-      testDir: './tests/e2e',
-      testMatch: '**/*.spec.js',
-      use: { 
-        ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3000'
+      name: "e2e",
+      testDir: "./tests/e2e",
+      testMatch: "**/*.spec.js",
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL: "http://localhost:3000",
       },
-      dependencies: ['integration']
-    }
+      dependencies: ["integration"],
+    },
   ],
   webServer: [
     {
-      command: 'cd backend && npm run dev',
+      command: "cd backend && npm run dev",
       port: 3001,
-      reuseExistingServer: !process.env.CI
+      reuseExistingServer: !process.env.CI,
     },
     {
-      command: 'cd frontend && npm run dev',
-      url: 'http://localhost:3000',
-      reuseExistingServer: !process.env.CI
-    }
-  ]
+      command: "cd frontend && npm run dev",
+      url: "http://localhost:3000",
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });
 ```
 
@@ -122,16 +122,19 @@ The following scripts in the root `package.json` file enable comprehensive test 
 This configuration provides comprehensive coverage for all test files in the project structure:
 
 1. Unit Tests
+
    - Backend service and utility tests
    - Frontend utility tests
    - WebSocket-specific unit tests with appropriate timeout settings
 
 2. Component Tests
+
    - Svelte component tests
    - Page component tests
    - Route-related tests
 
 3. Integration Tests
+
    - API integration tests
    - Feature integration tests
    - WebSocket integration scenarios
@@ -146,10 +149,12 @@ This configuration provides comprehensive coverage for all test files in the pro
 The configuration accounts for several specific requirements:
 
 1. WebSocket Testing
+
    - Dedicated project configuration with appropriate timeouts
    - Separate execution script for focused testing
 
 2. Browser Requirements
+
    - Browser environment only for integration and E2E tests
    - Component tests use specialized Svelte testing environment
    - Unit tests execute without browser dependencies

@@ -41,9 +41,10 @@ backend/
                   ├── typingHandler.js       // Real-time typing events
                   └── errorHandler.js        // Connection error handling
 ```
-### backend/index.js
-The backend's index.js serves as the application entry point, where the Express server is initialized and configured. This file imports and combines all the necessary middleware, routes, and WebSocket functionality.
 
+### backend/index.js
+
+The backend's index.js serves as the application entry point, where the Express server is initialized and configured. This file imports and combines all the necessary middleware, routes, and WebSocket functionality.
 
 ### Frontend Architecture
 
@@ -77,37 +78,47 @@ frontend/
             ├── +page.server.js                    // SSR data loading and logic
             └── +page.svelte                       // Main page component
 ```
-### frontend/src/app.html
-The frontend's app.html is the base HTML template that SvelteKit uses for all pages. This file defines the basic HTML structure and includes necessary meta tags, scripts, and style references. The app.scss file contains global styles that apply across the entire application.
 
+### frontend/src/app.html
+
+The frontend's app.html is the base HTML template that SvelteKit uses for all pages. This file defines the basic HTML structure and includes necessary meta tags, scripts, and style references. The app.scss file contains global styles that apply across the entire application.
 
 ## Core Functionalities
 
 ### Text Generation and Analysis
+
 The system provides real-time text generation and analysis through the TextGenerator and TextAnalyzer services. These components work together to create appropriate typing samples and provide immediate feedback on user input.
 
 ### Performance Metrics
+
 The MetricsCalculator service computes essential performance metrics including:
+
 - Words per minute (WPM)
 - Accuracy percentage
 - Error counts
 - Session duration
 
 ### Real-time Processing
+
 The WebSocket implementation ensures immediate feedback through:
+
 - Character-by-character validation
 - Real-time error highlighting
 - Instant performance metric updates
 
 ### State Management
+
 The StateManager maintains session consistency by tracking:
+
 - Active text samples
 - Current user progress
 - Session timing
 - Performance metrics
 
 ### Error Handling
+
 The error handling system provides comprehensive error management through:
+
 - Input validation
 - Error categorization
 - User-friendly error messages
@@ -116,12 +127,15 @@ The error handling system provides comprehensive error management through:
 ## Component Interactions
 
 ### Data Flow
+
 1. Initial Page Load
+
    - Server generates initial state
    - SSR renders initial page
    - WebSocket connection establishes
 
 2. Typing Session
+
    - User input processing
    - Real-time analysis
    - Immediate feedback
@@ -136,12 +150,14 @@ The error handling system provides comprehensive error management through:
 ## Implementation Guidelines
 
 ### Backend Development
+
 - Implement core services first
 - Establish WebSocket communication
 - Add error handling
 - Integrate state management
 
 ### Frontend Development
+
 - Set up SSR configuration
 - Implement core components
 - Establish WebSocket client
@@ -150,6 +166,7 @@ The error handling system provides comprehensive error management through:
 ## Quality Assurance
 
 The implementation should prioritize:
+
 - Code modularity
 - Error resilience
 - Performance optimization

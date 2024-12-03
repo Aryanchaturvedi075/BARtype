@@ -7,23 +7,23 @@ The application requires proper container registry configuration to manage our D
 ```yaml
 # .azure/container-registry.yml
 parameters:
-  registryName: 'bartypeRegistry'
-  resourceGroup: 'bartype-resources'
+  registryName: "bartypeRegistry"
+  resourceGroup: "bartype-resources"
 
 steps:
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: '$(AZURE_SUBSCRIPTION)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      az acr create \
-        --resource-group $(resourceGroup) \
-        --name $(registryName) \
-        --sku Standard \
-        --admin-enabled true
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: "$(AZURE_SUBSCRIPTION)"
+      scriptType: "bash"
+      scriptLocation: "inlineScript"
+      inlineScript: |
+        az acr create \
+          --resource-group $(resourceGroup) \
+          --name $(registryName) \
+          --sku Standard \
+          --admin-enabled true
 
-      az acr login --name $(registryName)
+        az acr login --name $(registryName)
 ```
 
 ## Environment-Specific Configuration Management
@@ -94,7 +94,7 @@ resources:
       Application_Type: web
       Flow_Type: Bluefield
       Request_Source: rest
-      
+
   - type: microsoft.operationalinsights/workspaces
     name: bartype-workspace
     properties:
@@ -131,17 +131,17 @@ parameters:
     type: string
 
 steps:
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: '$(AZURE_SUBSCRIPTION)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      az sql db create \
-        --resource-group $(resourceGroup) \
-        --server $(serverName) \
-        --name $(databaseName) \
-        --service-objective S0
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: "$(AZURE_SUBSCRIPTION)"
+      scriptType: "bash"
+      scriptLocation: "inlineScript"
+      inlineScript: |
+        az sql db create \
+          --resource-group $(resourceGroup) \
+          --server $(serverName) \
+          --name $(databaseName) \
+          --service-objective S0
 ```
 
 ## Scaling Configuration

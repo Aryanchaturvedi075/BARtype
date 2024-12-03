@@ -20,12 +20,14 @@ The application delivers essential typing test functionality with a focus on acc
 BARtype employs a robust technical stack designed for optimal performance and maintainability:
 
 ### Backend Technology
+
 - Fastify for high-performance HTTP server
 - WebSocket integration for real-time communication
 - Zod for runtime validation
 - Efficient text processing and analysis
 
 ### Frontend Technology
+
 - SvelteKit with SSR optimization
 - Flowbite-Svelte for UI components
 - TailwindCSS for styling
@@ -64,23 +66,27 @@ bartype/
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/Aryanchaturvedi075/BARtype.git
 cd bartype
 ```
 
 2. Install root dependencies:
+
 ```bash
 npm install
 ```
 
 3. Install backend dependencies:
+
 ```bash
 cd backend
 npm install
 ```
 
 4. Install frontend dependencies:
+
 ```bash
 cd frontend
 npm install
