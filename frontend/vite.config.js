@@ -1,5 +1,6 @@
 import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig } from "vite";
+import tailwindcss from "tailwindcss";
 
 export default defineConfig({
   plugins: [sveltekit()],
@@ -9,7 +10,7 @@ export default defineConfig({
     postcss: {
       // Path to your PostCSS config file (e.g., postcss.config.js)
       config: "./postcss.config.js",
-      plugins: [require("postcss-nesting"), require("tailwindcss")],
+      plugins: [ tailwindcss ],
     },
   },
 });

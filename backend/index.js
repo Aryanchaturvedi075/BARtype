@@ -2,16 +2,10 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
 import websocket from "@fastify/websocket";
-import { CONFIG } from "./config/environment.js";
-import { errorHandler } from "./middleware/errorHandler.js";
-import { apiRoutes } from "./routes/api.js";
-import { WSServer } from "./websocket/WSServer.js";
-import { StateManager } from "./core/session/StateManager.js";
-import { TextGenerator } from "./core/typing/TextGenerator.js";
-import { TextAnalyzer } from "./core/typing/TextAnalyzer.js";
-import { MetricsCalculator } from "./core/typing/MetricsCalculator.js";
-import { TypingHandler } from "./websocket/handlers/typingHandler.js";
-import { WebSocketErrorHandler } from "./websocket/handlers/errorHandler.js";
+import {
+  CONFIG, errorHandler, apiRoutes, WSServer, StateManager, TextGenerator,
+  TextAnalyzer, MetricsCalculator, TypingHandler, WebSocketErrorHandler
+} from './src/index.js';
 
 async function buildApp() {
   const app = fastify({
