@@ -18,6 +18,7 @@ bartype/
 │
 ├── backend/
 │   └── src/
+│       ├── index.js
 │       ├── config/
 │       │   └── environment.js
 │       ├── core/
@@ -40,7 +41,7 @@ bartype/
 │       │   └── api.js
 │       └── websocket/
 │           ├── WSServer.js
-|           ├── WSServer.spec.js
+|           ├── WSServer.spec.js                        [unit test]
 │           └── handlers/
 │               ├── typingHandler.js
 │               ├── errorHandler.js
@@ -49,18 +50,26 @@ bartype/
 │
 ├── frontend/
 │   └── src/
+│       ├── app.html
+│       ├── app.scss
 │       ├── lib/
+│       │   ├── index.js
 │       │   ├── components/
 │       │   │   └── typing/
 │       │   │       ├── TextDisplay.svelte
 │       │   │       ├── TextInput.svelte
-│       │   │       └── Results.svelte
+│       │   │       ├── Results.svelte
+│       │   │       ├── TextDisplay.spec.js             [unit test]
+│       │   │       ├── TextInput.spec.js               [unit test]
+│       │   │       └── Results.spec.js                 [unit test]
 │       │   └── utils/
 │       │       ├── websocket.js
 │       │       └── websocket.js                        [unit test]
 │       └── routes/
+│           ├── +layout.svelte
 │           ├── +page.server.js
-│           └── +page.svelte
+│           ├── +page.svelte
+│           └── +page.spec.js                           [unit test]
 └── tests/
     ├── integration/
     │   ├── api/

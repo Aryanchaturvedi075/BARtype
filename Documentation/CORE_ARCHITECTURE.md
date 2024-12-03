@@ -66,6 +66,7 @@ frontend/
       ├── app.html                                 // HTML template
       ├── app.scss                                 // Global styles
       ├── lib/
+      |     ├── index.js                           // Module Aliasing
       |     ├── utils/
       |     |     └── websocket.js                 // WebSocket client handling
       │     └── components/
