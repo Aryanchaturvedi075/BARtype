@@ -55,7 +55,7 @@ declare module '$env/static/private' {
 	export const DISPLAY: string;
 	export const DriverData: string;
 	export const EDITOR: string;
-	export const EFC_11656: string;
+	export const EFC_16412: string;
 	export const EnableLog: string;
 	export const EXEPATH: string;
 	export const FORCE_COLOR: string;
@@ -223,7 +223,7 @@ declare module '$env/dynamic/private' {
 		DISPLAY: string;
 		DriverData: string;
 		EDITOR: string;
-		EFC_11656: string;
+		EFC_16412: string;
 		EnableLog: string;
 		EXEPATH: string;
 		FORCE_COLOR: string;

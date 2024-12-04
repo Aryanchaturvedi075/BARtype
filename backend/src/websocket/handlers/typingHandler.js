@@ -46,14 +46,15 @@ export class TypingHandler {
     );
 
     const updatedSession = this.stateManager.updateSession(session.id, {
-      // TODO: Verify if this is intended to be here
       status: "completed",
       endTime,
+      finalMetrics
     });
 
     wsServer.sendMessage(session.id, "SESSION_COMPLETE", {
-      sessionId: session.id,
-      metrics: finalMetrics,
+        sessionId: session.id,
+        metrics: finalMetrics,
+        sessionStatus: updatedSession.status
     });
   }
 }

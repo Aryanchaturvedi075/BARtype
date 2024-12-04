@@ -10,27 +10,32 @@ export class WSServer {
 
   initialize(fastify) {
     fastify.get("/ws", { websocket: true }, (connection, request) => {
-      const { sessionId } = request.query.sessionId;
+        const { sessionId } = request.query;
 
-      if (!sessionId) {
-        connection.socket.close(4000, "Session ID is required");
-        return;
-      }
+        if (!sessionId) {
+            connection.socket.close(4000, "Session ID is required");
+            return;
+        }
 
-      try {
-        const session = this.stateManager.getSession(sessionId); // TODO: Verify if this was meant to be used
-        this.connections.set(sessionId, connection.socket);
+        try {
+            const session = this.stateManager.getSession(sessionId);
+            if (!session || session.status === 'completed') {
+                connection.socket.close(4001, "Invalid or expired session");
+                return;
+            }
+            this.connections.set(sessionId, connection.socket);
 
-        connection.socket.on("message", (message) => {
-          this.handleMessage(sessionId, message);
-        });
+            connection.socket.on("message", (message) => {
+                this.handleMessage(sessionId, message);
+            });
 
-        connection.socket.on("close", () => {
-          this.connections.delete(sessionId);
-        });
-      } catch (error) {
-        connection.socket.close(4001, "Invalid session");
-      }
+            connection.socket.on("close", () => {
+                this.connections.delete(sessionId);
+            });
+        } catch (error) {
+            console.error('WebSocket connection error:', error);
+            connection.socket.close(4001, "Invalid session");
+        }
     });
   }
 

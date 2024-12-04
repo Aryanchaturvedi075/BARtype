@@ -1,5 +1,4 @@
 // backend/src/routes/api.js
-import { FastifyPlugin } from "fastify";
 import { z } from "zod";
 import { CONFIG } from "../config/environment.js";
 import { AppError } from "../middleware/errorHandler.js";
@@ -20,26 +19,27 @@ export const apiRoutes = async (fastify) => {
       body: sessionRequestSchema,
     },
     handler: async (request, reply) => {
-      // TODO: verify if reply is needed
       const { wordCount } = request.body;
       const { stateManager, textGenerator } = fastify;
-
+  
       try {
-        const text = await textGenerator.generateText(wordCount);
-        const session = stateManager.createSession();
-
-        session.text = text;
-        stateManager.updateSession(session.id, { text });
-
-        return {
-          sessionId: session.id,
-          text: session.text,
-          wordCount,
-        };
+          const text = await textGenerator.generateText(wordCount);
+          const session = stateManager.createSession();
+  
+          session.text = text;
+          stateManager.updateSession(session.id, { text });
+  
+          reply.code(201); // Set appropriate status code
+          return {
+              sessionId: session.id,
+              text: session.text,
+              wordCount,
+          };
       } catch (error) {
-        throw new AppError("Failed to create session", 500);
+          console.error('Session creation error:', error);
+          throw new AppError("Failed to create session", 500);
       }
-    },
+    }
   });
 
   // Get session metrics
@@ -51,7 +51,7 @@ export const apiRoutes = async (fastify) => {
     },
     handler: async (request, reply) => {
       const { sessionId } = request.params;
-      const stateManager = fastify.stateManager;
+      const { stateManager } = fastify.stateManager;
 
       try {
         const session = stateManager.getSession(sessionId);
@@ -59,14 +59,14 @@ export const apiRoutes = async (fastify) => {
           throw new AppError("Session not found", 404);
         }
 
+        reply.code(201); // Set appropriate status code
         return {
           sessionId,
           metrics: session.metrics,
         };
       } catch (error) {
-        if (error instanceof AppError) {
-          throw error;
-        }
+        if (error instanceof AppError) { throw error; }
+        console.error('Session creation error:', error);
         throw new AppError("Failed to retrieve metrics", 500);
       }
     },
@@ -74,6 +74,11 @@ export const apiRoutes = async (fastify) => {
 
   // Health check endpoint
   fastify.get("/health", async (request, reply) => {
-    return { status: "healthy" };
+    const healthStatus = {
+        status: "healthy",
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime()
+    };
+    reply.code(200).send(healthStatus);
   });
 };
