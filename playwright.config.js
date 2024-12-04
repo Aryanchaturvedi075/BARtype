@@ -6,7 +6,7 @@ export default defineConfig({
   timeout: 30000,
   expect: { timeout: 5000 },
   // Force all tests to be run sequentially
-  workers: 1,
+  // workers: 1,
 
   projects: [
     {

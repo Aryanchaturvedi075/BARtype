@@ -26,6 +26,7 @@ npm init -y
 npm install ws
 npm install -D @playwright/test@latest
 npm install -D @playwright/experimental-ct-svelte@latest
+npx playwright install
 
 # Install development utilities
 npm install -D prettier@latest concurrently@latest
