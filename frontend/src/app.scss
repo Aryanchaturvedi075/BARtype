@@ -1,94 +1,101 @@
-// src/app.scss
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-// Custom Base Styles
-@layer base {
-  body {
-    @apply bg-primary text-text-primary min-h-screen transition-colors duration-300;
-  }
-
-  ::-webkit-scrollbar {
-    @apply w-2;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-primary-light;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-accent/30 rounded-full hover:bg-accent/50 transition-colors;
-  }
-
-  h1 {
-    @apply text-3xl font-bold text-gray-900;
-  }
-
-  h2 {
-    @apply text-2xl font-semibold text-gray-800;
-  }
+body {
+    @apply bg-gray-900 text-white;
+    background-image: url("https://coolbackgrounds.io/images/backgrounds/index/compute-ea4c57a4.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden; /* Hide scrollbars for the particle effect */
 }
 
-// Component-Specific Styles
-@layer components {
-  .typing-container {
-    @apply max-w-4xl mx-auto p-6 animate-fade-in;
-  }
+.typing-test-container {
+    @apply max-w-5xl mx-auto p-6 rounded-lg shadow-lg border-2 border-gray-400;
+    position: relative; /* To position the particle container */
+    z-index: 1; /* Ensure container is above the particles */
+}
 
-  .typing-text {
-    @apply font-mono text-lg leading-relaxed bg-primary-light 
-           rounded-lg p-6 shadow-lg shadow-black/20 
-           border border-text-secondary/10;
+.page-title {
+    @apply text-4xl font-bold text-center mb-8 text-yellow-500;
+}
 
-    .character {
-      @apply transition-all duration-150;
+.test-content {
+    @apply space-y-6;
+}
 
-      &.pending {
-        @apply text-text-secondary/50;
-      }
+#timer {
+    @apply text-xl font-mono text-center mt-4 text-gray-300;
+}
 
-      &.correct {
-        @apply text-accent animate-pulse-soft;
-      }
+.character {
+    @apply transition-colors duration-100;
 
-      &.incorrect {
-        @apply text-red-500 bg-red-900/20;
-      }
+    &.pending {
+        @apply text-gray-400;
     }
-  }
 
-  .typing-input {
-    @apply w-full p-4 bg-primary-light border border-text-secondary/10 
-           rounded-lg focus:ring-2 focus:ring-accent/50 focus:border-accent
-           font-mono text-lg text-text-primary placeholder-text-secondary/30
-           transition-all duration-300;
-  }
-
-  .metrics-display {
-    @apply grid grid-cols-2 md:grid-cols-4 gap-6 animate-slide-up;
-
-    .metric-card {
-      @apply bg-primary-light p-4 rounded-lg border border-text-secondary/10
-             shadow-lg shadow-black/20 transition-transform duration-300
-             hover:transform hover:scale-105;
-
-      .metric-value {
-        @apply text-2xl font-bold text-accent animate-pulse-soft;
-      }
+    &.correct {
+        @apply text-green-500;
     }
-  }
+
+    &.incorrect {
+        @apply text-red-500;
+    }
 }
 
-.btn-primary {
-  @apply bg-accent text-primary font-semibold px-6 py-2 rounded-lg
-         transform transition-all duration-300 hover:scale-105
-         hover:bg-accent-light focus:ring-2 focus:ring-accent-dark;
+.results-container {
+    @apply opacity-0 transition-all duration-500 transform -translate-y-10;
+
+    &.visible {
+        @apply opacity-100 translate-y-0;
+    }
 }
 
-// Utility classes
-@layer utilities {
-  .transition-fast {
-    @apply transition-all duration-150;
-  }
+.metrics-grid {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-6;
+}
+
+.metric-item {
+    @apply flex flex-col items-center text-center;
+}
+
+.metric-label {
+    @apply text-sm font-medium text-gray-400 mb-1;
+}
+
+.metric-value {
+    @apply text-2xl font-bold text-gray-200;
+}
+
+.input-container {
+    @apply flex flex-col gap-4;
+}
+
+.typing-input {
+    @apply w-full p-4 font-mono text-lg border rounded-lg focus:ring-2 focus:ring-yellow-500 bg-gray-800;
+    resize: none;
+    caret-color: #00ffff;
+}
+
+.controls {
+    @apply flex justify-center gap-4 mt-4;
+}
+
+.controls button {
+    @apply transition-transform duration-300;
+}
+
+.controls button:hover {
+    @apply scale-105;
+}
+
+/* Particle container styles */
+#particles-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Ensure particles are behind the content */
 }

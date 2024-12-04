@@ -26,6 +26,7 @@
     "flowbite": "^2.5.2",
     "flowbite-svelte": "^0.47.4",
     "nanoid": "^5.0.9",
+    "particle.js": "^1.0.7",
     "zod": "^3.23.8"
   }
 }

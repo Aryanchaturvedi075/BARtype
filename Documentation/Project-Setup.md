@@ -144,6 +144,7 @@ npm install zod@latest
 npm install nanoid@latest
 npm install flowbite-svelte@latest
 npm install flowbite@latest
+npm install particle.js@latest
 
 # Install development dependencies
 npm install -D @sveltejs/kit@latest
