@@ -1,5 +1,5 @@
 // tailwind.config.js
-const colors = require("tailwindcss/colors"); // TODO: Verify if needed
+import plugin from 'flowbite/plugin';
 
 export default {
   content: [
@@ -46,5 +46,5 @@ export default {
       },
     },
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [ plugin],
 };
