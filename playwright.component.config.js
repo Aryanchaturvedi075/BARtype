@@ -7,7 +7,7 @@ export default defineConfig({
   testDir: "./frontend/src",
   testMatch: [
     "./lib/components/typing/*.spec.js",
-    "./routes/*!(.server).spec.js",
+    "./routes/__test__/*.spec.js",
   ],
   timeout: 10000, // Global test timeout
   use: {

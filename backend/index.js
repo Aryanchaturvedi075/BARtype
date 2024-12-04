@@ -34,7 +34,9 @@ async function buildApp() {
 
   await app.register(websocket, {
     options: {
-      port: CONFIG.WS_PORT,
+      port: CONFIG.WS_PORT || 3002,
+      server: false,  // Explicitly set to false since we're using port
+      noServer: false // Explicitly set to false since we're using port
     },
   });
 

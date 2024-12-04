@@ -2,8 +2,9 @@
 import { z } from "zod";
 import { CONFIG } from "../config/environment.js";
 import { AppError } from "../middleware/errorHandler.js";
+import { createValidationMiddleware } from "../middleware/validation.js";
 
-const sessionRequestSchema = z.object({
+export const sessionRequestSchema = z.object({
   wordCount: z
     .number()
     .int()
@@ -12,12 +13,55 @@ const sessionRequestSchema = z.object({
     .default(CONFIG.DEFAULT_WORD_COUNT),
 });
 
+export const metricsRequestSchema = z.object({
+  params: z.object({
+      sessionId: z.string()
+  })
+});
+
+// Convert Zod schema to JSON Schema for Fastify
+const zodToJsonSchema = (zodSchema) => {
+  return {
+      body: {
+          type: 'object',
+          required: Object.keys(zodSchema.shape),
+          properties: {
+              wordCount: {
+                  type: 'number',
+                  minimum: CONFIG.MIN_WORD_COUNT,
+                  maximum: CONFIG.MAX_WORD_COUNT
+              }
+          }
+      }
+  };
+};
+
+const zodParamsToJsonSchema = (zodSchema) => {
+  // Extract the params schema shape from our Zod schema
+  const paramsShape = zodSchema.shape.params.shape;
+  
+  return {
+      params: {
+          type: 'object',
+          required: Object.keys(paramsShape),
+          properties: Object.entries(paramsShape).reduce((acc, [key, value]) => {
+              // Map Zod types to JSON Schema types
+              acc[key] = {
+                  type: value instanceof z.ZodString ? 'string' :
+                        value instanceof z.ZodNumber ? 'number' :
+                        'string' // Default fallback
+              };
+              return acc;
+          }, {})
+      }
+  };
+};
+
 export const apiRoutes = async (fastify) => {
   // Create new typing session
   fastify.post("/api/session", {
-    schema: {
-      body: sessionRequestSchema,
-    },
+    schema: zodToJsonSchema(sessionRequestSchema),
+    preValidation: createValidationMiddleware(sessionRequestSchema),
     handler: async (request, reply) => {
       const { wordCount } = request.body;
       const { stateManager, textGenerator } = fastify;
@@ -44,11 +88,8 @@ export const apiRoutes = async (fastify) => {
 
   // Get session metrics
   fastify.get("/api/session/:sessionId/metrics", {
-    schema: {
-      params: z.object({
-        sessionId: z.string(),
-      }),
-    },
+    schema: zodParamsToJsonSchema(metricsRequestSchema),
+    preValidation: createValidationMiddleware(metricsRequestSchema),
     handler: async (request, reply) => {
       const { sessionId } = request.params;
       const { stateManager } = fastify.stateManager;

@@ -8,7 +8,7 @@
   "scripts": {
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev": "concurrently -n \"backend,frontend\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "build": "npm run build:backend && npm run build:frontend",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
