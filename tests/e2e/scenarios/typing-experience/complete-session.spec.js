@@ -1,6 +1,6 @@
 // tests/e2e/scenarios/typing-experience/complete-session.spec.js
 import { test, expect } from "@playwright/test";
-import { setupTypingSession } from "../../setup/test-environment.js";
+import { setupTypingSession } from "../../../setup/test-environment.js";
 import typingTexts from "../../fixtures/typing-texts.json";
 
 test.describe("Complete Typing Session", () => {

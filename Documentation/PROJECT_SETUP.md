@@ -23,6 +23,7 @@ mkdir -p tests/{integration/{api,websocket,typing-session},e2e/{fixtures,setup,s
 npm init -y
 
 # Install testing framework
+npm install ws
 npm install -D @playwright/test@latest
 npm install -D @playwright/experimental-ct-svelte@latest
 

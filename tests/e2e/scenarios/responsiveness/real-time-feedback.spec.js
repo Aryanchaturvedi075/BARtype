@@ -1,6 +1,6 @@
 // tests/e2e/scenarios/responsiveness/real-time-feedback.spec.js
 import { test, expect } from "@playwright/test";
-import { setupTypingSession } from "../../setup/test-environment.js";
+import { setupTypingSession } from "../../../setup/test-environment.js";
 
 test.describe("Real-time Feedback", () => {
   test("provides immediate visual feedback", async ({ page }) => {

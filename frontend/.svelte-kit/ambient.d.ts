@@ -26,10 +26,6 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const NODE_ENV: string;
-	export const BACKEND_PORT: string;
-	export const FRONTEND_PORT: string;
-	export const WS_PORT: string;
 	export const ACLOCAL_PATH: string;
 	export const ACSetupSvcPort: string;
 	export const ACSvcPort: string;
@@ -81,6 +77,7 @@ declare module '$env/static/private' {
 	export const MSYSTEM_CHOST: string;
 	export const MSYSTEM_PREFIX: string;
 	export const NODE: string;
+	export const NODE_ENV: string;
 	export const NODE_EXE: string;
 	export const NPM_CLI_JS: string;
 	export const npm_command: string;
@@ -152,7 +149,6 @@ declare module '$env/static/private' {
 	export const USERDOMAIN_ROAMINGPROFILE: string;
 	export const USERNAME: string;
 	export const USERPROFILE: string;
-	export const VITE_USER_NODE_ENV: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
@@ -194,10 +190,6 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		NODE_ENV: string;
-		BACKEND_PORT: string;
-		FRONTEND_PORT: string;
-		WS_PORT: string;
 		ACLOCAL_PATH: string;
 		ACSetupSvcPort: string;
 		ACSvcPort: string;
@@ -249,6 +241,7 @@ declare module '$env/dynamic/private' {
 		MSYSTEM_CHOST: string;
 		MSYSTEM_PREFIX: string;
 		NODE: string;
+		NODE_ENV: string;
 		NODE_EXE: string;
 		NPM_CLI_JS: string;
 		npm_command: string;
@@ -320,7 +313,6 @@ declare module '$env/dynamic/private' {
 		USERDOMAIN_ROAMINGPROFILE: string;
 		USERNAME: string;
 		USERPROFILE: string;
-		VITE_USER_NODE_ENV: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		VSCODE_GIT_ASKPASS_NODE: string;
