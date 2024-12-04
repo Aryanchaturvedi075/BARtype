@@ -32,7 +32,6 @@ declare module '$env/static/private' {
 	export const ALLUSERSPROFILE: string;
 	export const ANDROID_SDK_HOME: string;
 	export const APPDATA: string;
-	export const BROWSER: string;
 	export const ChocolateyInstall: string;
 	export const ChocolateyLastPathUpdate: string;
 	export const CHROME_CRASHPAD_PIPE_NAME: string;
@@ -49,7 +48,6 @@ declare module '$env/static/private' {
 	export const CONDA_PYTHON_EXE: string;
 	export const CONDA_SHLVL: string;
 	export const CONFIG_SITE: string;
-	export const DEBUG_COLORS: string;
 	export const DISPLAY: string;
 	export const DriverData: string;
 	export const EDITOR: string;
@@ -198,7 +196,6 @@ declare module '$env/dynamic/private' {
 		ALLUSERSPROFILE: string;
 		ANDROID_SDK_HOME: string;
 		APPDATA: string;
-		BROWSER: string;
 		ChocolateyInstall: string;
 		ChocolateyLastPathUpdate: string;
 		CHROME_CRASHPAD_PIPE_NAME: string;
@@ -215,7 +212,6 @@ declare module '$env/dynamic/private' {
 		CONDA_PYTHON_EXE: string;
 		CONDA_SHLVL: string;
 		CONFIG_SITE: string;
-		DEBUG_COLORS: string;
 		DISPLAY: string;
 		DriverData: string;
 		EDITOR: string;
